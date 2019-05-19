@@ -18,7 +18,7 @@ export class MemberDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe(data => {
-      this.user = data['user']
+      this.user = data['user'];
     });
 
     this.galleryOptions = [
@@ -42,10 +42,10 @@ export class MemberDetailComponent implements OnInit {
         small: this.user.photos[i].url,
         medium: this.user.photos[i].url,
         big: this.user.photos[i].url,
-        description: this.user.photos[i].descitpion
+        description: this.user.photos[i].description
       });
-      return imageUrls;
     }
+    return imageUrls;
   }
 
   // Use this to load Users into component instead of using route resolvers

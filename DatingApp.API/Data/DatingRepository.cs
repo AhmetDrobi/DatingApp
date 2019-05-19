@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,15 @@ namespace DatingApp.API.Data
         public async Task<bool> SaveAll()
         {
             return await _context.SaveChangesAsync() > 0; // Returns True if save is successful since saves return the number of rows effected
+        }
+        public async Task<Photo> GetPhoto(int id)
+        {
+            var photo = await _context.Photos.FirstOrDefaultAsync(p => p.Id == id);
+            return photo;
+        }
+        public async Task<Photo> GetMainPhotoForUser(int id)
+        {
+            return await _context.Photos.Where(u => u.UserId == id).FirstOrDefaultAsync(p => p.IsMain); // Query the photos table for a photo that is main and for the specified user.
         }
     }
 }
