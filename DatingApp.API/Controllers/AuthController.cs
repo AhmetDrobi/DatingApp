@@ -28,19 +28,20 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserForRegisterDto userForRegister)
+        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
 
-            userForRegister.Username = userForRegister.Username.ToLower();
-            if (await _repo.UserExist(userForRegister.Username))
+            userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
+            if (await _repo.UserExist(userForRegisterDto.Username))
                 return BadRequest("Username already exist");
-            var userToCreate = new User
-            {
-                Username = userForRegister.Username
-            };
-            var createdUser = await _repo.Registor(userToCreate, userForRegister.Password);
-
-            return StatusCode(201);
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
+            var createdUser = await _repo.Registor(userToCreate, userForRegisterDto.Password);
+            // Since we need to return the object created in CreatedAtRoute, we need to map the user createdUser object to an object that doesn't have password hash and salt fields to return. Here UserForDetailedDto works fine
+var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+            return CreatedAtRoute("GetUser",new {
+                controller ="Users",
+                id = createdUser.Id
+            }, userToReturn);
         }
 
         [HttpPost("login")]

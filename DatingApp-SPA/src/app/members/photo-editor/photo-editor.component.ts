@@ -56,6 +56,13 @@ export class PhotoEditorComponent implements OnInit {
         };
 
         this.photos.push(photo);
+
+        // Case for first when uploading a photo for the first time for new users
+        if (photo.isMain) {
+          this.authService.changeMemberPhoto(photo.url);
+          this.authService.currentUser.photoUrl = photo.url; // Update the current user photo
+          localStorage.setItem('user', JSON.stringify(this.authService.currentUser)); // Update the localStorage
+        }
       }
     };
   }
@@ -79,7 +86,6 @@ export class PhotoEditorComponent implements OnInit {
     this.alertify.confirm('Are you sure you want to delete this photo?', () => {
       this.userService.deletePhoto(this.authService.decodedToken.nameid, id).subscribe(() => {
         this.photos.slice(this.photos.findIndex(p => p.id === id), 1);
-        console.log(this.photos.findIndex(p => p.id === id));
         this.alertify.success('The photo was deleted successfully!');
       }, error => {
         this.alertify.error('Failed to delete the photo');
