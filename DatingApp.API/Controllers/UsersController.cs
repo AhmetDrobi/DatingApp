@@ -73,6 +73,7 @@ namespace DatingApp.API.Controllers
             }
             throw new Exception($"Updating User {id} failed on save");
         }
+
         [HttpPost("{id}/like/{recipientId}")]
         public async Task<IActionResult> LikeUser(int id, int recipientId)
         {
@@ -103,6 +104,25 @@ namespace DatingApp.API.Controllers
             if (await _repo.SaveAll())
                 return Ok();
             return BadRequest("Faild to like user");
+        }
+
+        [HttpDelete("{id}/like/{recipientId}")]
+        public async Task<IActionResult> DislikeUser(int id, int recipientId)
+        {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+            var likeToDelete = await _repo.GetLike(id, recipientId);
+            if (likeToDelete == null)
+            {
+                return BadRequest("You don't like this person!");
+            }
+            _repo.Delete(likeToDelete);
+            if (await _repo.SaveAll())
+                return Ok();
+            return BadRequest("Couldn't dislike this person");
+
         }
     }
 }

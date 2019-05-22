@@ -40,5 +40,11 @@ export class ListsComponent implements OnInit {
           this.alertify.error(error);
         });
   }
+  dislike($event: any) {
+    this.users = this.users.filter((value, index, arr) => {
+      return value.id !== $event;
+    });
+
+  }
 
 }
