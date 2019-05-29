@@ -11,6 +11,7 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { ListsResolver } from './_resolvers/lists.resolver';
+import { MessagesResolver } from './_resolvers/messages.resolver';
 
 export const appRouts: Routes = [
     { path: '', component: HomeComponent }, // Home route, if home was written it would cause problems for just localhost:4000 without /
@@ -22,7 +23,7 @@ export const appRouts: Routes = [
             { path: 'members/:id', component: MemberDetailComponent, resolve: { user: MemberDetailResolver } },
             // tslint:disable-next-line: max-line-length
             { path: 'member/edit', component: MemberEditComponent, resolve: { user: MemberEditResolver }, canDeactivate: [PreventUnsavedChanges] },
-            { path: 'messages', component: MessagesComponent },
+            { path: 'messages', component: MessagesComponent, resolve: { messages: MessagesResolver } },
             { path: 'lists', component: ListsComponent, resolve: { users: ListsResolver } },
         ]
     },

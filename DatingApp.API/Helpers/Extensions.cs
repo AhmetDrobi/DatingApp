@@ -7,7 +7,6 @@ namespace DatingApp.API.Helpers
 {
     public static class Extensions
     {
-        private static int curr;
 
         public static void AddApplicationError(this HttpResponse response, string message)
         {

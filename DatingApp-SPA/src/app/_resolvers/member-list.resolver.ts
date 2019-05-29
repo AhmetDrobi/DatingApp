@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
 import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { User } from '../_models/user';
 import { UserService } from '../_services/user.service';
@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
-export class MemberListResolver implements Resolve<User[]>{
+export class MemberListResolver implements Resolve<User[]> {
     pageNumber = 1;
     pageSize = 5;
     constructor(private userService: UserService, private router: Router, private alertify: AlertifyService) {
